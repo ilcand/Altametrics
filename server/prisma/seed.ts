@@ -18,6 +18,27 @@ async function main() {
     },
   });
 
+  // Create additional users
+  const additionalUsers = [
+    { email: 'john.doe@example.com', name: 'John Doe' },
+    { email: 'jane.smith@example.com', name: 'Jane Smith' },
+    { email: 'michael.johnson@example.com', name: 'Michael Johnson' },
+    { email: 'emily.williams@example.com', name: 'Emily Williams' },
+    { email: 'david.brown@example.com', name: 'David Brown' }
+  ];
+
+  for (const userData of additionalUsers) {
+    await prisma.user.upsert({
+      where: { email: userData.email },
+      update: {},
+      create: {
+        email: userData.email,
+        name: userData.name,
+        password: hashedPassword, // Using the same password for simplicity
+      },
+    });
+  }
+
   // Create sample invoices
   const invoiceData = [
     {
